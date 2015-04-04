@@ -1,0 +1,9 @@
+context contexteHumain
+
+sets PERSONNE CLIENT RESIDENT 
+
+axioms
+  @axm1; finite(PERSONNE)
+  @axm2; finite(CLIENT)
+  @axm3; finite(RESIDENT) // Définition de 3 ensembles auxquels peuvent appartenir les variables
+end
