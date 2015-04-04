@@ -1,4 +1,4 @@
-machine machineFunKeyHotel sees ContexteHumain
+machine machineFunKeyHotel sees contexteHumain
 
 variables
   pers
