@@ -4,4 +4,7 @@ context contexteHumain
 sets
   PERSONNE
 
+
+axioms
+  @axm1; finite(PERSONNE)
 end
