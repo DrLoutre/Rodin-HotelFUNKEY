@@ -1,38 +1,41 @@
 machine machineFunKeyHotel sees contexteHumain
 
+
+
 variables
-  pers
-  reserv
-  cli
-  resid
-  chkin
-  chkout
+	pers
+	reserv
+	cli
+	resid
+	chkin
+	chkout
+
 
 invariants
-   @inv1: pers ⊆  PERSONNE
-   @inv2: cli ⊆ CLIENT
-   @inv3: resid ⊆ RESIDENT
+	@inv1: pers ⊆ PERSONNE
+	@inv2: cli ⊆ PERSONNE
+	@inv3: resid ⊆ PERSONNE
 // Définis les 3 variables d'ensemble de Personnes, Clients et Résidents
-   @inv4: reserv ∈ BOOL
-   @inv5: chkin ∈ BOOL
-   @inv6: chkout ∈ BOOL
+	@inv4: reserv ∈ BOOL
+	@inv5: chkin ∈ BOOL
+	@inv6: chkout ∈ BOOL
 // Les paramètres booléens si la ⦂personne a réservé, check-in ou check-out.
-   @inv7: PERSONNE ⊆ CLIENT
-   @inv8: CLIENT ⊆  RESIDENT
-// Et les relations entre les différnets ensembles d'humains.
+	@inv7: resid ⊆ cli
+// Et les relations entre les différnets ensembles d'humains·
+
 
 events
   event INITIALISATION
   begin
-    @act1: reserv ≔  FALSE
-    @act2: chkin ≔ FALSE
-    @act3: chkout ≔ FALSE
+	@act1: reserv ≔ FALSE
+	@act2: chkin ≔ FALSE
+	@act3: chkout ≔ FALSE
 // Ces valeurs sont à faux, en effet, au début personne n'a ni réservé ni check-in
 // Encore moins check out.
-    @act4: resid ≔  ∅
-    @act5: cli ≔  ∅
+	@act4: resid ≔ ∅
+	@act5: cli ≔ ∅
 // Au début le nombre de client et de résidents sont zéro
- 	@act6: pers ≔  ∅    //???
+	@act6: pers ≔ ∅ //???
 // Définir un nombre de personne presqu'infini (Personnes sur terre estimé à
 // 7 290 477 807 personnes le vendredi 3 avril 2015 à 9 h 07 min et 24 s (GTM +1)
   end
@@ -41,35 +44,38 @@ events
   event réserver
 // Lorsqu'une personne quelconque a réservé ça implique quelle soit ajoutée
 // à l'ensemble clients.
-    any potentiel_client
-    where
-     @gr1: potentiel_client ∈  PERSONNE
-     @gr2: reserv = TRUE
-    then
-     @act1: cli ≔  cli ∪  {potentiel_client}
+	any potentiel_client
+	where
+	  @gr1: potentiel_client ∈ pers
+  	  @gr2: reserv = TRUE
+	then
+	  @act1: cli ≔ cli ∪ {potentiel_client}
   end
+
 
   event checkerin
 // Lorsqu'un client a passé l'étape de check-in, cela implique qu'il est ajouté
 // à l'ensemble résident
-  	any futur_resident
-  	where
-  	 @gr1: futur_resident ∈ CLIENT
-  	 @gr2: chkin = TRUE
-  	then
-  	 @act1: resid ≔ resid ∪ {futur_resident}
+	any futur_resident
+	where
+	  @gr1: futur_resident ∈ cli
+	  @gr2: chkin = TRUE
+	then
+	  @act1: resid ≔ resid ∪ {futur_resident}
   end
+
 
   event checkerout
 // Lorsqu'un résident a procédé au check out cela implique qu'il est retiré
 // et de l'ensemble client et de l'ensemble résident.
-    any resident_actuel
-    where
-     @gr1: resident_actuel ∈ RESIDENT
-     @gr2: chkout = TRUE
-    then
-     @act1: resid ≔ resid ∖ {resident_actuel}
-     @act2: cli ≔ cli ∖ {resident_actuel}
+	any resident_actuel
+	where
+	  @gr1: resident_actuel ∈ resid
+	  @gr2: chkout = TRUE
+	then
+	  @act1: resid ≔ resid ∖ {resident_actuel}
+	  @act2: cli ≔ cli ∖ {resident_actuel}
   end
+
 
 end
